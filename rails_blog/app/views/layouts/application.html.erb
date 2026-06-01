@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ruby on Rails Blog</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <script>
+    let lastUpdate = Date.now();
+
+    function checkForUpdates() {
+      fetch('/check-updates')
+        .then(response => response.json())
+        .then(data => {
+          if (data.lastUpdate > lastUpdate) {
+            lastUpdate = data.lastUpdate;
+            location.reload();
+          }
+        })
+        .catch(error => console.log('Помилка перевірки оновлень:', error));
+    }
+
+    setInterval(checkForUpdates, 5000);
+    document.addEventListener('visibilitychange', function() {
+      if (!document.hidden) checkForUpdates();
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1><%= link_to "Rails Blog", root_path %></h1>
+      <nav>
+        <%= link_to "Створити або редагувати пост", manage_posts_path, class: "btn btn-primary", target: "_blank" %>
+        <%= link_to "Всі пости", root_path, class: "btn btn-secondary" %>
+      </nav>
+    </header>
+    <main>
+      <%= yield %>
+    </main>
+    <footer>
+      <p>&copy; 2026 Ruby on Rails Blog</p>
+    </footer>
+  </div>
+</body>
+</html>

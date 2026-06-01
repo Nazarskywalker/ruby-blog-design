@@ -1,0 +1,36 @@
+# Ruby
+*.gem
+*.rbx
+*.rbc
+.ruby-gemset
+.ruby-version
+
+# Sinatra
+*.tmp
+temp_*.rb
+emergency_*.rb
+working_app.rb
+simple_server.rb
+
+# Logs
+*.log
+logs/
+
+# Uploads
+public/uploads/*
+!public/uploads/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment variables
+.env
+.env.*

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ruby Blog</title>
+    <link rel="stylesheet" href="/style.css">
+    <!-- Вимикаємо кешування для оновлень в реальному часі -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    
+    <!-- Автоматичне оновлення в реальному часі -->
+    <script>
+        // Автоматичне оновлення кожні 5 секунд
+        let lastUpdate = Date.now();
+        
+        function checkForUpdates() {
+            fetch('/check-updates')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.lastUpdate > lastUpdate) {
+                        console.log('Виявлено оновлення, перезавантаження сторінки...');
+                        lastUpdate = data.lastUpdate;
+                        location.reload();
+                    }
+                })
+                .catch(error => {
+                    console.log('Помилка перевірки оновлень:', error);
+                });
+        }
+        
+        // Перевіряти оновлення кожні 5 секунд
+        setInterval(checkForUpdates, 5000);
+        
+        // Перевіряти при поверненні на вкладку
+        document.addEventListener('visibilitychange', function() {
+            if (!document.hidden) {
+                checkForUpdates();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><a href="/">Ruby Blog</a></h1>
+            <nav>
+                <a href="/posts/manage" class="btn btn-primary" target="_blank">Створити або редагувати пост</a>
+                <a href="/" class="btn btn-secondary">Всі пости</a>
+            </nav>
+        </header>
+        <main>
+            <%= yield %>
+        </main>
+        <footer>
+            <p>&copy; 2026 Ruby Blog</p>
+        </footer>
+    </div>
+</body>
+</html>

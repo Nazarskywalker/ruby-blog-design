@@ -1,0 +1,29 @@
+<div class="manage-container">
+  <h2>Керування постами</h2>
+  <div class="actions-header">
+    <%= link_to "Створити новий пост", new_post_path, class: "btn btn-primary" %>
+    <%= link_to "На головну", root_path, class: "btn btn-secondary" %>
+  </div>
+
+  <% if @posts.empty? %>
+    <p class="no-posts">Постів ще немає. Створіть перший пост.</p>
+  <% else %>
+    <div class="posts-grid">
+      <% @posts.reverse.each do |post| %>
+        <article class="post-card">
+          <% if post[:image] %>
+            <div class="post-image"><%= image_tag post[:image], alt: post[:title] %></div>
+          <% end %>
+          <h3><%= link_to post[:title], post_path(post[:id]) %></h3>
+          <p class="post-meta">Створено: <%= post[:created_at] %></p>
+          <p><%= truncate(post[:content], length: 160) %></p>
+          <div class="post-actions">
+            <%= link_to "Переглянути", post_path(post[:id]), class: "btn btn-secondary" %>
+            <%= link_to "Редагувати", edit_post_path(post[:id]), class: "btn btn-warning" %>
+            <%= button_to "Видалити", post_path(post[:id]), method: :delete, class: "btn btn-danger", form: { data: { turbo_confirm: "Видалити пост?" } } %>
+          </div>
+        </article>
+      <% end %>
+    </div>
+  <% end %>
+</div>

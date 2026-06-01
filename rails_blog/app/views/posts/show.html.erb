@@ -1,0 +1,24 @@
+<% if @post %>
+  <article class="post-show">
+    <h2><%= @post[:title] %></h2>
+    <p class="post-meta">
+      Створено: <%= @post[:created_at] %>
+      <% if @post[:updated_at] %>
+        | Оновлено: <%= @post[:updated_at] %>
+      <% end %>
+    </p>
+
+    <% if @post[:image] %>
+      <div class="post-image-full"><%= image_tag @post[:image], alt: @post[:title] %></div>
+    <% end %>
+
+    <div class="post-content">
+      <%= simple_format(@post[:content]) %>
+    </div>
+
+    <div class="post-actions">
+      <%= link_to "Назад", root_path, class: "btn btn-secondary" %>
+      <%= link_to "Редагувати", edit_post_path(@post[:id]), class: "btn btn-warning" %>
+    </div>
+  </article>
+<% end %>

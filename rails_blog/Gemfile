@@ -1,0 +1,18 @@
+source "https://rubygems.org"
+
+# Rails 7.0 is used here because Rails 7.1 on some Windows RubyInstaller setups
+# pulls newer irb/rdoc/psych and fails while building the native psych gem.
+gem "rails", "~> 7.0.8"
+gem "sqlite3", "~> 1.4"
+gem "puma", "~> 6.0"
+gem "sprockets-rails", "~> 3.4"
+
+# Required on Windows because Rails/tzinfo cannot use system timezone database there.
+gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+# Not used in this homework page and removed to avoid extra dependencies on Windows:
+# gem "importmap-rails"
+# gem "turbo-rails"
+# gem "stimulus-rails"
+# gem "jbuilder"
+# gem "debug"

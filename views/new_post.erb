@@ -1,0 +1,57 @@
+<div class="post-form-container">
+    <h2><%= post ? 'Редагувати пост' : 'Створити новий пост' %></h2>
+    
+    <% if post %>
+        <div class="edit-mode-info">
+            <p>Редагування поста: <strong><%= post[:title] %></strong></p>
+        </div>
+    <% end %>
+    <form action="<%= action %>" method="post" enctype="multipart/form-data">
+        <% if post %>
+            <input type="hidden" name="_method" value="put">
+        <% end %>
+        
+        <div class="form-group">
+            <label for="title">Заголовок:</label>
+            <input type="text" id="title" name="title" value="<%= post ? post[:title] : '' %>" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="content">Зміст:</label>
+            <textarea id="content" name="content" rows="10" required><%= post ? post[:content] : '' %></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="image">Зображення:</label>
+            <input type="file" id="image" name="image" accept="image/*">
+            <% if post && post[:image] %>
+                <div class="current-image">
+                    <p>Поточне зображення:</p>
+                    <img src="<%= post[:image] %>" alt="<%= post[:title] %>" style="max-width: 200px; height: auto;">
+                </div>
+            <% end %>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">
+                <%= post ? 'Оновити пост' : 'Створити пост' %>
+            </button>
+            <a href="/" class="btn btn-secondary">Скасувати</a>
+            <% if post %>
+                <form action="/posts/<%= post[:id] %>" method="post" style="display: inline;">
+                    <input type="hidden" name="_method" value="delete">
+                    <button type="submit" class="btn btn-danger" onclick="return confirm('Ви впевнені, що хочете видалити цей пост?')">Видалити пост</button>
+                </form>
+            <% end %>
+        </div>
+        
+        <% if post %>
+            <div class="additional-actions">
+                <h3>Додаткові дії з постом:</h3>
+                <div class="action-links">
+                    <a href="/posts/<%= post[:id] %>" class="btn btn-info" target="_blank">Переглянути пост</a>
+                </div>
+            </div>
+        <% end %>
+    </form>
+</div>

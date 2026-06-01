@@ -1,0 +1,124 @@
+<% latest_posts = posts.reverse %>
+<% featured_post = latest_posts.first %>
+<% regular_posts = featured_post ? latest_posts.drop(1) : [] %>
+<% total_posts = posts.length %>
+<% total_images = posts.count { |post| post[:image] } %>
+
+<section class="blog-hero">
+    <div class="hero-content">
+        <span class="hero-kicker">AI Generated Blog Design</span>
+        <h2>Головна сторінка сучасного блогу</h2>
+        <p>
+            Публікуйте новини, корисні статті, власні думки та історії в одному зручному Ruby-блозі.
+            Дизайн сторінки створений у сучасному стилі: великий hero-блок, картки постів, адаптивна сітка та помітні кнопки дій.
+        </p>
+        <div class="hero-actions">
+            <a href="/posts/manage" class="btn btn-primary">Створити пост</a>
+            <a href="#latest-posts" class="btn btn-ghost">Переглянути пости</a>
+        </div>
+    </div>
+
+    <aside class="hero-panel" aria-label="Статистика блогу">
+        <div class="hero-panel-card accent-card">
+            <span class="stat-number"><%= total_posts %></span>
+            <span class="stat-label">постів у блозі</span>
+        </div>
+        <div class="hero-panel-card">
+            <span class="stat-number"><%= total_images %></span>
+            <span class="stat-label">постів із зображеннями</span>
+        </div>
+        <div class="hero-panel-card">
+            <span class="stat-number">2026</span>
+            <span class="stat-label">навчальний проєкт</span>
+        </div>
+    </aside>
+</section>
+
+<section class="blog-categories" aria-label="Категорії блогу">
+    <article class="category-card">
+        <span class="category-icon">✍️</span>
+        <h3>Авторські статті</h3>
+        <p>Місце для власних думок, історій, гайдів і навчальних матеріалів.</p>
+    </article>
+    <article class="category-card">
+        <span class="category-icon">🖼️</span>
+        <h3>Пости з фото</h3>
+        <p>Підтримка зображень робить кожен матеріал більш помітним і живим.</p>
+    </article>
+    <article class="category-card">
+        <span class="category-icon">⚡</span>
+        <h3>Швидке керування</h3>
+        <p>Пости можна створювати, редагувати та видаляти через сторінку керування.</p>
+    </article>
+</section>
+
+<section class="posts-container modern-posts" id="latest-posts">
+    <div class="section-heading">
+        <span class="section-kicker">Latest posts</span>
+        <h2>Останні публікації</h2>
+        <p>Добірка всіх матеріалів, які вже додані до блогу.</p>
+    </div>
+
+    <% if posts.empty? %>
+        <div class="empty-state">
+            <div class="empty-illustration">📝</div>
+            <h3>Постів ще немає</h3>
+            <p>Створіть перший пост, щоб головна сторінка блогу виглядала наповненою.</p>
+            <a href="/posts/manage" class="btn btn-primary">Додати перший пост</a>
+        </div>
+    <% else %>
+        <% if featured_post %>
+            <article class="featured-post-card">
+                <div class="featured-image">
+                    <% if featured_post[:image] %>
+                        <img src="<%= featured_post[:image] %>" alt="<%= featured_post[:title] %>" loading="lazy">
+                    <% else %>
+                        <div class="featured-placeholder">Ruby Blog</div>
+                    <% end %>
+                </div>
+                <div class="featured-content">
+                    <span class="post-badge">Новий пост</span>
+                    <h3><a href="/posts/<%= featured_post[:id] %>"><%= featured_post[:title] %></a></h3>
+                    <p class="post-meta">
+                        Створено: <%= featured_post[:created_at] %>
+                        <% if featured_post[:updated_at] %>
+                            | Оновлено: <%= featured_post[:updated_at] %>
+                        <% end %>
+                    </p>
+                    <p class="post-excerpt"><%= featured_post[:content][0..180] %><%= featured_post[:content].length > 180 ? '...' : '' %></p>
+                    <a href="/posts/<%= featured_post[:id] %>" class="btn btn-primary">Читати повністю</a>
+                </div>
+            </article>
+        <% end %>
+
+        <% if regular_posts.any? %>
+            <div class="posts-grid blog-grid">
+                <% regular_posts.each do |post| %>
+                    <article class="post-card blog-card">
+                        <% if post[:image] %>
+                            <div class="post-image">
+                                <img src="<%= post[:image] %>" alt="<%= post[:title] %>" loading="lazy">
+                            </div>
+                        <% else %>
+                            <div class="post-image post-image-placeholder">Ruby Blog</div>
+                        <% end %>
+                        <div class="blog-card-body">
+                            <span class="post-badge muted-badge">Стаття</span>
+                            <h3><a href="/posts/<%= post[:id] %>"><%= post[:title] %></a></h3>
+                            <p class="post-meta">
+                                Створено: <%= post[:created_at] %>
+                                <% if post[:updated_at] %>
+                                    | Оновлено: <%= post[:updated_at] %>
+                                <% end %>
+                            </p>
+                            <p class="post-excerpt"><%= post[:content][0..120] %><%= post[:content].length > 120 ? '...' : '' %></p>
+                            <div class="post-actions">
+                                <a href="/posts/<%= post[:id] %>" class="btn btn-secondary">Читати далі</a>
+                            </div>
+                        </div>
+                    </article>
+                <% end %>
+            </div>
+        <% end %>
+    <% end %>
+</section>
